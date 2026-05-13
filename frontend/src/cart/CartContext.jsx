@@ -22,7 +22,7 @@ function loadInitialState() {
       name: String(it.name ?? ""),
       price: Number(it.price ?? 0),
       image: it.image ? String(it.image) : "",
-      qty: Math.max(1, Number(it.qty ?? 1)),
+      qty: 1,
     }))
     .filter((it) => (typeof it.id === "number" || typeof it.id === "string") && it.name);
   return { items };
@@ -38,7 +38,7 @@ function reducer(state, action) {
       if (existing) {
         return {
           ...state,
-          items: state.items.map((x) => (x.id === id ? { ...x, qty: x.qty + 1 } : x)),
+          items: state.items.map((x) => (x.id === id ? { ...x, qty: 1 } : x)),
         };
       }
       return {
@@ -61,9 +61,10 @@ function reducer(state, action) {
     }
     case "SET_QTY": {
       const { id, qty } = action.payload || {};
-      const nextQty = Number(qty);
+      let nextQty = Math.floor(Number(qty));
       if (!Number.isFinite(nextQty)) return state;
       if (nextQty <= 0) return { ...state, items: state.items.filter((x) => x.id !== id) };
+      nextQty = Math.min(1, nextQty);
       return { ...state, items: state.items.map((x) => (x.id === id ? { ...x, qty: nextQty } : x)) };
     }
     case "CLEAR":

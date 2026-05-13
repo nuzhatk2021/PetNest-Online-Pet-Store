@@ -9,7 +9,7 @@ function money(n) {
 }
 
 export default function Cart() {
-  const { items, subtotal, setQty, removeItem, clear } = useCart();
+  const { items, subtotal, removeItem, clear } = useCart();
   const navigate = useNavigate();
   const [checkoutOpen, setCheckoutOpen] = useState(false);
 
@@ -78,29 +78,8 @@ export default function Cart() {
                     </div>
 
                     <div className="mt-3 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setQty(it.id, (Number(it.qty) || 1) - 1)}
-                          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all"
-                          aria-label="Decrease quantity"
-                        >
-                          −
-                        </button>
-                        <input
-                          value={it.qty}
-                          onChange={(e) => setQty(it.id, e.target.value)}
-                          className="w-14 text-center bg-[#0A0A0A] border border-white/10 rounded-full px-3 py-2 text-sm text-white focus:outline-none focus:border-yellow-400/50"
-                          inputMode="numeric"
-                        />
-                        <button
-                          onClick={() => setQty(it.id, (Number(it.qty) || 1) + 1)}
-                          className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all"
-                          aria-label="Increase quantity"
-                        >
-                          +
-                        </button>
-                      </div>
-                      <p className="font-semibold text-yellow-400">{money((Number(it.qty) || 0) * (Number(it.price) || 0))}</p>
+                      <p className="text-sm text-neutral-500">Qty 1 — each pet listing can only be purchased once.</p>
+                      <p className="font-semibold text-yellow-400">{money(it.price)}</p>
                     </div>
                   </div>
                 </div>

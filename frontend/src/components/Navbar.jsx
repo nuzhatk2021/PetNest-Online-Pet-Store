@@ -38,7 +38,7 @@ export default function Navbar({ user, onSignOut }) {
       </Link>
 
       <div style={{ display: "flex", gap: "22px", alignItems: "center" }}>
-        {["Home", "Pets", "Search"].map((label) => (
+        {["Home", "Pets"].map((label) => (
           <Link
             key={label}
             to={label === "Home" ? "/" : `/${label.toLowerCase()}`}

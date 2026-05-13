@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useCart } from "../cart/CartContext";
 
 export default function PetCard({ pet, index }) {
-  const { addItem } = useCart();
+  const { addItem, items } = useCart();
   const [imageFailed, setImageFailed] = useState(false);
+  const inCart = items.some((x) => String(x.id) === String(pet.id));
 
   return (
     <motion.div
@@ -46,11 +47,31 @@ export default function PetCard({ pet, index }) {
           <span className="text-yellow-400 font-bold text-lg" style={{ color: "var(--petnest-accent, #E8C547)" }}>${pet.price}</span>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => addItem(pet)}
-              className="text-sm bg-yellow-400 hover:opacity-90 text-black px-4 py-2 rounded-full transition-all duration-200 font-semibold"
-              style={{ background: "var(--petnest-accent, #E8C547)", color: "var(--petnest-accent-text, #070707)" }}
+              type="button"
+              disabled={inCart}
+              onClick={() => {
+                if (!inCart) addItem(pet);
+              }}
+              className={`text-sm px-4 py-2 rounded-full transition-all duration-200 font-semibold ${
+                inCart
+                  ? "cursor-default border border-white/10 text-neutral-400"
+                  : "bg-yellow-400 hover:opacity-90 text-black"
+              }`}
+              style={
+                inCart
+                  ? {
+                      background: "rgba(255,255,255,0.06)",
+                      borderColor: "var(--petnest-ring, rgba(255,255,255,0.1))",
+                      color: "var(--petnest-muted, rgb(163 163 163))",
+                    }
+                  : {
+                      background: "var(--petnest-accent, #E8C547)",
+                      color: "var(--petnest-accent-text, #070707)",
+                    }
+              }
+              aria-label={inCart ? `${pet.name} is already in your cart` : `Add ${pet.name} to cart`}
             >
-              Add to cart
+              {inCart ? "In cart" : "Add to cart"}
             </button>
             <Link
               to={`/pets/${pet.id}`}

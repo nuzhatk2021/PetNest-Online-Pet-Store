@@ -153,7 +153,7 @@ export default function CheckoutModal({ open, onClose, items, subtotal, onSucces
                 >
                   {submitting ? "Placing order..." : "Place order"}
                 </button>
-                <p className="text-xs text-neutral-600">Placing an order will mark these pets as sold in Supabase.</p>
+                <p className="text-xs text-neutral-600">Each pet is one-of-a-kind: quantity is always 1. Placing an order sets IsSold in Supabase; the row stays for your records.</p>
               </div>
             </form>
 

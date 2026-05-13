@@ -9,11 +9,13 @@ function money(value) {
 
 export default function PetDetail() {
   const { petID } = useParams();
-  const { addItem } = useCart();
+  const { addItem, items } = useCart();
   const [pet, setPet] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [imageFailed, setImageFailed] = useState(false);
+
+  const inCart = pet != null && items.some((x) => String(x.id) === String(pet.id));
 
   useEffect(() => {
     let active = true;
@@ -111,10 +113,19 @@ export default function PetDetail() {
               </div>
 
               <button
-                onClick={() => addItem(pet)}
-                className="w-full bg-yellow-400 hover:opacity-90 text-black px-6 py-3 rounded-full transition-all duration-200 font-bold"
+                type="button"
+                disabled={inCart}
+                onClick={() => {
+                  if (!inCart) addItem(pet);
+                }}
+                className={`w-full px-6 py-3 rounded-full transition-all duration-200 font-bold ${
+                  inCart
+                    ? "cursor-default border border-white/15 bg-white/5 text-neutral-400"
+                    : "bg-yellow-400 hover:opacity-90 text-black"
+                }`}
+                aria-label={inCart ? `${pet.name} is already in your cart` : `Add ${pet.name} to cart`}
               >
-                Add to Cart
+                {inCart ? "In cart" : "Add to Cart"}
               </button>
             </div>
           </div>

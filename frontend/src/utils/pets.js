@@ -30,7 +30,8 @@ export async function fetchPetById(petID) {
   const response = await fetch(`${PETS_API_BASE}/${encodeURIComponent(petID)}`, { cache: "no-cache" });
 
   if (!response.ok) {
-    throw new Error("Unable to load this pet. Please try again.");
+    const errBody = await response.json().catch(() => ({}));
+    throw new Error(errBody?.message || "Unable to load this pet. Please try again.");
   }
 
   const data = await response.json();
